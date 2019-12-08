@@ -1,10 +1,10 @@
-#动态规划解题步骤：1、问题抽象化
+# 动态规划解题步骤：1、问题抽象化
 #                 2、建立模型
 #                 3、寻找约束条件
 #                 4、判断是否满足最优性原理
 #                 5、找大问题与小问题的递推关系式、填表、寻找解组成
 
-#动态规划与分治法相同点：都是把大问题拆分成小问题，通过寻找大问题与小问题的递推关系，
+# 动态规划与分治法相同点：都是把大问题拆分成小问题，通过寻找大问题与小问题的递推关系，
 # 解决一个个小问题，最终达到解决原问题的效果
 
 #动态规划与分治法不同点：分治法在子问题和子子问题等上被重复计算了很多次，而动态规划则具有记忆性，
@@ -17,41 +17,115 @@
 #Q:有n个物品，它们有各自的体积和价值，现有给定容量的背包，如何让背包里装入的物品具有最大的价值总和？
 #n＝4，背包容量cap＝30
 
+#找到最优的价值总和（最优解求解）
+def findoptv(W,V,n,cap):
+    '''
+    :param W: 各物品所占空间
+    :param V: 各物品价值
+    :param n: 物品数量
+    :param cap: 背包容量
+    :return: 背包里装入的物品最大的价值总和
+    '''
+    # # 4、计算顺序  自上向下  自左往右
+    # for i in range(1,n+1):
+    #     for j in range(1,cap+1):
+    #         # 2、转移方程
+    #         # 物品大于背包容量
+    #         if j < W[i]:
+    #             dp[i][j] = dp[i-1][j]
+    #         else:
+    #             # 选择物品i与不选择物品i
+    #             dp[i][j] = max(dp[i-1][j],dp[i-1][j-W[i]]+V[i])
+    # return dp[-1][-1]
 
-V = [0,12,8,9,5]
-W = [0,15,10,12,8]
-n = 4
-cap = 30
-dp = [[0] * (cap+1) for i in range(n+1)]
-items = [0] * (n+1)
-
-def findoptv(W,V,n,cap):                           #找到最优的价值总和（最优解求解）
-
+    #优化空间复杂度
+    dp = [0 for _ in range(cap+1)]
     for i in range(1,n+1):
-        for j in range(1,cap+1):
-            if j < W[i]:
-                dp[i][j] = dp[i-1][j]
-            else:
-                dp[i][j] = max(dp[i-1][j],dp[i-1][j-W[i]]+V[i])       ###状态转移找到最优解
+        for j in range(cap,W[i]-1,-1):
+            dp[j] = max(dp[j], dp[j-W[i]] + V[i])
+    return dp[cap],dp
 
-    return max(max(row) for row in dp)
 
-def finditems(i,j):                                  #找到得到最优的价值总和由哪些商品组成（最优解回溯）
-
+#找到得到最优的价值总和由哪些商品组成（最优解回溯） 由右下往左上回溯
+def finditems(i,j):
+    '''
+    回溯法 DFS
+    搜索dp矩阵
+    :param i:
+    :param j:
+    :return:
+    '''
     if (i >= 0):
+        # 未选择物品i
         if(dp[i][j] == dp[i-1][j]):
             items[i] = 0
             finditems(i-1,j)
-
-        elif (j>=W[i]) & (dp[i][j] == dp[i-1][j-W[i]] + V[i]):
+        # 背包剩余容量大于物品i的重量  且 选择物品i
+        elif (j - W[i] >= 0) and (dp[i][j] == dp[i - 1][j - W[i]] + V[i]):
             items[i] = 1
             finditems(i-1,j-W[i])
-
     return items
 
-
-
 if __name__ == '__main__':
+    V = [0, 3,9,8,16,20]
+    W = [0, 4,3,10,12,5]
+    n = 5
+    cap = 20
+    # 1、确定状态  dp[i][j]表示背包容量为j时，物品种类为前i项时，背包里装入的物品最大的价值总和
+    # dp = [[0] * (cap + 1) for i in range(n + 1)]
+    items = [0] * (n + 1)
+    res,dp = findoptv(W, V, n, cap)
+    print(res)
+    # print(finditems(n,cap))
 
-    print(findoptv(W,V,n,cap))
-    print(finditems(n,cap))
+'''
+完全背包问题
+有N种物品和一个容量为V的背包，每种物品都有(无限件可用)。第i种物品的费用是w[i]，
+价值是v[i]。求解将哪些物品装入背包可使这些物品的费用总和不超过背包容量，且价值总和最大。
+
+基本思路:
+这个问题非常类似于01背包问题，所不同的是每种物品有无限件。也就是从每种物品的角度考虑，与它相关的策略已并非取或不取两种，
+而是有取0件、取1件、取2件……等很多种。如果仍然按照解01背包时的思路，令f[i][j]表示前i种物品恰放入一个容量为V的背包的最大权值。
+仍然可以按照每种物品不同的策略写出状态转移方程，像这样：
+    dp[i][j]=max(dp[i−1][j−k∗w[i]]+k∗v[i]) | 0<=k∗w[i]<=j
+
+递推公式:
+一维：
+for (int i = 1; i <= n; i++)
+    for (int j = w[i]; j <= cap; j++)
+        dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+优化后的二维：dp[i][j]=max(dp[i−1][j],dp[i][j−w[i]]+v[i])
+
+'''
+
+
+'''
+多重背包问题
+有N种物品和一个容量为V的背包。第i种物品最多有p[i]件可用，每件费用是w[i]，价值是v[i]。
+求解将哪些物品装入背包可使这些物品的费用总和不超过背包容量，且价值总和最大。
+
+基本思路：
+这题目和完全背包问题很类似。基本的方程只需将完全背包问题的方程略微一改即可，因为对于第i种物品有p[i]+1种策略：
+取0件，取1件……取p[i]件。令dp[i][j]表示前i种物品恰放入一个容量为j的背包的最大权值，则有状态转移方程：
+    dp[i][j]=max(dp[i−1][j−k∗w[i]]+k∗v[i]) | 0<=k<=p[i]    
+    
+复杂度：O(V∗Σp[i])
+
+改进 -->
+
+for (i = 1; i <= n; i++)
+    int num = min(p[i], V / w[i])
+    for (int k = 1; num > 0; k <<= 1) 
+        if (k > num) k = num
+        num -= k
+        for (int j = V; j >= w[i] * k; j--)
+            dp[j] = max(dp[j], dp[j - w[i] * k] + v[i] * k);
+ 
+O(V∗Σlog(p[i]))
+
+'''
+
+
+
+
+

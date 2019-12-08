@@ -1,49 +1,51 @@
 from Linked_list import linkedlist_operate    #链表题规范化输入输出
 
-
 class LNode:
     def __init__(self, x=None):
         self.val = x
         self.next = None
 
-def sortList(head):
-    l = []
-    while head:
-        l.append(head.val)
-        head = head.next
-    l.sort()
-    return l
+# def sortList(head):
+#     l = []
+#     while head:
+#         l.append(head.val)
+#         head = head.next
+#     l.sort()
+#     return l
 
-##############################################################    链表的归并排序
-# 效率不高 ，不知道什么原因
-def merge(l,r):
-    dum = cur = LNode(0)
-    while l and r:
-        if l.val < r.val:
-            cur.next,l = l,l.next
-        else:
-            cur.next,r = r,r.next
+##############################################################
+# 链表的归并排序
 
-        cur = cur.next
+def sortleft(head):
+    def merge(left, right):
+        dum = cur = LNode(0)
+        while left and right:
+            #较小的数接在cur后面
+            if left.val < right.val:
+                cur.next= left
+                left = left.next
+            else:
+                cur.next= right
+                right = right.next
+            cur = cur.next
+        # 剩下的数接在cur后面
+        cur.next = left or right
+        return dum.next
 
-    cur.next = l or r
-    return dum.next
-
-
-def sortList1(head):
     if not head or not head.next:
         return head
-
-    slow,fast = head,head
-
-    while fast and fast.next and fast.next.next:
-        slow = slow.next
+    fast,slow = head,head
+    while fast.next and fast.next.next:
         fast = fast.next.next
-    mid = slow.next                         #找到中点
+        slow = slow.next
+    mid = slow.next
     slow.next = None
-    return merge(*map(sortList1,(head,mid)))   #递归分裂 再合并
 
+    left = sortleft(head)
+    right = sortleft(mid)
+    sorted = merge(left, right)
 
+    return sorted
 
 if __name__ == '__main__':
     l = [1, 8, 3, 4, 5]
@@ -53,7 +55,7 @@ if __name__ == '__main__':
     print('输入')
     llist.outll(cur)
 
-    res = sortList1(cur.next)
+    res = sortleft(cur.next)
 
     print('输出')
     llist.outll(res)

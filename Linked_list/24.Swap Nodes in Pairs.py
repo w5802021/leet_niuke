@@ -6,9 +6,17 @@ class LNode:
         self.next = None
 
 def swapPairs(head):
+    '''
+    思路：处理链表中的三个节点三个节点：head、head.next、未处理完的链表部分
+         交换两节点head、head.next
+    :param head:
+    :return:
+    '''
     if not head or not head.next:
         return head
     nex = head.next
+    # 由于是从左往右递归
+    # swapPairs(nex.next)处理右边节点后面的未完成的链表部分
     head.next = swapPairs(nex.next)
     nex.next = head
     return nex
@@ -31,17 +39,9 @@ def swapPairs1(head):
 
     return res.next
 
-
-
-
-
 if __name__ == '__main__':
     l = [1,2,3,4,5]
-
     llist = linkedlist_operate.LinkList()
     cur = llist.initList(l)
-
     res = swapPairs1(cur.next)
-
-    print('输出')
     llist.outll(res)

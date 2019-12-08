@@ -1,4 +1,4 @@
-def findJudge( N, trust):
+def findJudge(N, trust):
     '''
     思路：将每个人看成网络的一个节点 a信任b看成是a到b的有向路径 因此记录节点的入度既能判断某人是否是法官
     :param N:

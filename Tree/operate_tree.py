@@ -17,7 +17,6 @@ class Tree:
         dfs(root, res)
         return res
 
-
     def inorderTraversal(self,root):    #中序遍历
         def dfs(root,res):
             if root:

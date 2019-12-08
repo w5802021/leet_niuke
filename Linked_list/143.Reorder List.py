@@ -22,25 +22,31 @@ def reverseList(head):
     return reverse_head
 
 def reorderList(head):
+    '''
+    思路：1.找到中点
+          2.逆转后半部分
+          3.拼接前半部分和逆转过的后半部分
+    :param head:
+    :return:
+    '''
     if not head or not head.next:
         return None
 
-    fast = head
-    slow = head
+    fast,slow = head,head
 
-    while fast and fast.next and fast.next.next:
+    while fast.next and fast.next.next:
         fast = fast.next.next
         slow = slow.next
 
-    rev = slow.next           #中间的数一般放最后
-    slow.next = None          #为了使前半部分 被切分出来
-    rev = reverseList1(rev)
+    rev = slow.next       # 数组长度为奇数 中间的数一般放最后
+    slow.next = None      # 为了使前半部分 被切分出来
+    rev = reverseList1(rev) #将数组后半部分反转
 
     first = head #前半部分
     second = rev #后半部分                    #链表长为奇数，first比second长度大1，偶数则相等
 
-    while first and second:             #里面的节点交换顺序要理清
-
+    # 里面的节点交换顺序要理清
+    while first and second:
         tmp1 = first.next
         tmp2 = second.next
         first.next = second

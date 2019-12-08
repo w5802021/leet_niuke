@@ -13,7 +13,7 @@ def myPow(x, n):
     # pow为最后输出的值
     while n:
         # 若n为奇数，先将n-1乘上
-        if n & 1:
+        if n % 2 != 0:
             pow *= x
         # 此时n-1为偶数，将乘子系数连乘，
         x *= x
@@ -30,7 +30,7 @@ def myPow1( x,  n):
     '''
     def fastPow(x, n):
         if (n == 0):
-            return 1.0
+            return 1
         half = fastPow(x, n // 2)
         if (n % 2 == 0):
             return half * half
@@ -40,5 +40,7 @@ def myPow1( x,  n):
         x = 1 / x
         n = -n
     return fastPow(x, n)
+
+print(myPow(2,16))
 
 

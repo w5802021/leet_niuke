@@ -24,24 +24,36 @@ def reverseBetween(head,m,n):
     l1.extend(l2[::-1]).extend(l3)
     return l1
 
-def reverseBetween1(head,m,n):          #迭代版本
-
+def reverseBetween1(head,m,n):
+    # 迭代版本
+    '''
+    思路：每次循环将cur.next和(pre.next--cur这个整体作交换(这一部分随着交换次数的增加，长度会增加))
+    :param head:
+    :param m:
+    :param n:
+    :return:
+    '''
     dummy = pre = LNode(0)
     dummy.next = head
 
     for i in range(m - 1):
         pre = pre.next
     cur = pre.next
-
-    for i in range(n - m):   #cur:当前节点  pre：上一个节点  tmp:下一个节点
-        tmp = cur.next                 #保存cur.next为后面做交换
-        cur.next = tmp.next            #tmp.next后的数接到cur后，使得pre.next中去除tmp位置元素
+    # cur:当前节点  pre：上一个节点  tmp:下一个节点
+    for i in range(n - m):
+        # 保存cur.next为后面做交换
+        tmp = cur.next
+        # tmp.next后的数接到cur后
+        # 使得pre.next中去除tmp位置元素
+        cur.next = tmp.next
+        # 将cur.next调换到最前面
         tmp.next = pre.next
-        pre.next = tmp                 #将cur.next调换到最前面
+        pre.next = tmp
 
-    return dummy.next                   #核心思路：每次循环将cur.next和（pre.next--cur这个整体作交换）
+    return dummy.next
 
-def reverseBetween2(head,m,n):        #迭代版本   。。。。待理解
+def reverseBetween2(head,m,n):        #递归版本
+    # 待理解
     if not head:
         return None
 
@@ -83,7 +95,7 @@ def reverseBetween2(head,m,n):        #迭代版本   。。。。待理解
     return head
 
 if __name__ == '__main__':
-    l = [1, 8, 3, 4, 5]
+    l = [1, 2,3,4,5,6,7,8,9,10]
 
     llist = linkedlist_operate.LinkList()
     cur = llist.initList(l)

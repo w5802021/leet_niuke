@@ -1,6 +1,5 @@
 
 class LNode:
-
     def __init__(self, val=None):
         self.val = val
         self.next = None
@@ -34,7 +33,6 @@ class LinkList(object):
     def getLength(self):
         if self.isEmpty():
             exit(0)
-
         p = self.head
         len = 0
         while p:
@@ -59,14 +57,12 @@ class LinkList(object):
         if index<0 or index>self.getLength()-1:
             print ("\rKey Error! Program Exit.")
             exit(0)
-
         p = self.head
         i = 0
         while i<=index:
             pre = p
             p = p.next
             i += 1
-
         #遍历找到索引值为 index 的结点后, 在其后面插入结点
         node = LNode(key)
         pre.next = node
@@ -93,7 +89,6 @@ class LinkList(object):
                 return 1
 
         #p的下一个结点为空说明到了最后一个结点, 删除之即可
-
     def create_linklist(self):
         i = 1
         head = LNode()

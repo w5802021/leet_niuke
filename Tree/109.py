@@ -16,20 +16,17 @@ def sortedListToBST(head):
         return None
     if not head.next:
         return TreeNode(head.val)
-    #
-    prevPtr = None
-    slow, fast = head, head
+    # 这里取得中点要靠前，所以让fast先走一步
+    slow, fast = head, head.next.next
     while fast and fast.next:
-        prevPtr = slow
         fast = fast.next.next
         slow = slow.next
-    tmp = slow
-    # 使得链表在中点切分为两段
-    if prevPtr:
-        prevPtr.next = None
-    root = TreeNode(tmp.val)
+    mid = slow.next
+    slow.next = None
+
+    root = TreeNode(mid.val)
     root.left = sortedListToBST(head)
-    root.right = sortedListToBST(tmp.next)
+    root.right = sortedListToBST(mid.next)
     return root
 
 if __name__ == '__main__':

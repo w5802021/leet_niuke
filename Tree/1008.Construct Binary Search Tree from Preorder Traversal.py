@@ -28,6 +28,27 @@ def bstFromPreorder(preorder):
 
     return root
 
+def bstFromPreorder2(preorder):
+    if preorder:
+        root = TreeNode(preorder[0])
+
+        l,r = [],[]
+        for i in range(1, len(preorder)):
+            if preorder[i] <= preorder[0]:
+                l.append(preorder[i])
+            else:
+                r.append(preorder[i])
+
+        root.left = bstFromPreorder2(l)
+        root.right = bstFromPreorder2(r)
+
+        return root
+
+
+
+
+
+
 if __name__ == '__main__':
     l = [3,9,20,1,2]
     tree = operate_tree.Tree()

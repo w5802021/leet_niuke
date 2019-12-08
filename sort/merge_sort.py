@@ -1,13 +1,13 @@
 #归并排序思想：如果要排序一个数组，我们先把数组从中间递归地分成前后两部分。
 #然后分别对前后两部分进行排序，再将排好序的两部分数据合并在一起就可以了
 #
-def mergesort(list):
-    if len(list) <= 1:
-        return list
-    num = len(list)//2
+def mergesort(nums):
+    if len(nums) <= 1:
+        return nums
+    mid = len(nums)//2
     # 递归划分待排序的数组
-    left = mergesort(list[:num])
-    right = mergesort(list[num:])
+    left = mergesort(nums[:mid])
+    right = mergesort(nums[mid:])
     return merge(left,right)
 
 def merge(left,right):
@@ -23,8 +23,8 @@ def merge(left,right):
             res.append(right[r])
             r += 1
 
-    res += right[r:]
     res += left[l:]
+    res += right[r:]
     return res
 
 if __name__ == '__main__':

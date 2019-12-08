@@ -5,16 +5,26 @@ class LNode:
         self.val = x
         self.next = None
 
-def addTwoNumbers(l1, l2, carry=0):              # carry判断两数之和是否有进位
-    if not(l1 or l2):                            #l1,l2输入都为空
-        return LNode(1) if carry else None       #有进位要返回进位
+def addTwoNumbers(l1, l2, carry=0):
+    '''
 
-    l1 ,l2 = l1 or LNode(0),l2 or LNode(0)       # l1,l2取完，则后续其值赋为0
+    :param l1:
+    :param l2:
+    :param carry: carry判断两数之和是否有进位
+    :return:
+    '''
+    # l1,l2输入都为空
+    # 有进位要返回进位
+    if not l1 and not l2:
+        return LNode(1) if carry else None
+    # l1,l2取完，则后续其值赋为0
+    l1 = l1 or LNode(0)
+    l2 = l2 or LNode(0)
 
     val = l1.val + l2.val + carry
-
-    l1.val, l1.next = val % 10, addTwoNumbers(l1.next,l2.next,val > 9)  #链表l1存储两数之和
-
+    # 链表l1存储两数之和
+    l1.val = val % 10
+    l1.next = addTwoNumbers(l1.next,l2.next,val > 9)
     return l1    #
 
 def addTwoNumbers1(l1, l2):
@@ -42,6 +52,5 @@ if __name__ == '__main__':
     llist = linkedlist_operate.LinkList()
     cur1 = llist.initList(l1)
     cur2 = llist.initList(l2)
-    res = addTwoNumbers1(cur1.next, cur2.next)
-    print('输出')
+    res = addTwoNumbers(cur1.next, cur2.next)
     llist.outll(res)

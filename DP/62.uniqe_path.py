@@ -45,7 +45,7 @@ def uniquePathsWithObstacles(grid):    #63.带障碍物
     return dp[-1][-1]
 
 if __name__ == '__main__':
-    # m,n=3,2
-    # print(uniquePaths(m,n))
+    m,n=3,3
+    print(uniquePaths(m,n))
     nums = [[1,0,0],[0,1,0],[0,0,0]]
-    print(uniquePathsWithObstacles(nums))
+    # print(uniquePathsWithObstacles(nums))

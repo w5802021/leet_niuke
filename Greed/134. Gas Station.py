@@ -1,16 +1,25 @@
 
 def canCompleteCircuit(gas, cost):
+    '''
+    贪心：每次起始出发点选在  其上一加油站gas[i] - cost[i]为负，本加油站gas[i] - cost[i]为正的加油站
+    :param nums:
+    :return:
+    '''
+    n = len(gas)
+    # total_tank无论从哪个加油站出发，总的油箱剩油量
+    total_tank=0
+    # curr_tank是从st加油站出发，到当前加油站，油箱的剩油量
+    curr_tank = 0
     st = 0
-    tmp = 0
-    minv = 0
-
-    for i in range(len(gas)):
-        tmp += gas[i] - cost[i]
-
-        if tmp < minv:      #即找到一点i  使得在该处出发到下一处，油量可以继续维持走下去，否则下一索引，它能
-            minv = tmp
+    for i in range(n):
+        total_tank += gas[i] - cost[i]
+        curr_tank += gas[i] - cost[i]
+        # 如果从上一次记录的st加油站出发不能通过（i-->i+1），则新的st加油站应该为i+1,同时初始化curr_tank
+        if curr_tank < 0:
             st = i + 1
-    return -1 if tmp < 0 else st
+            curr_tank = 0
+
+    return st if total_tank >= 0 else -1
 
 if __name__ == '__main__':
     gas = [1, 2, 3, 4, 5]

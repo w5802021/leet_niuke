@@ -10,12 +10,12 @@
 #最长公共子串：公共子串必须在原串中是连续的
 
 #最长回文串：其正序串S与逆序串S'的最长公共子串不一定就是最长回文串；还需要注意当我们找到最长的公共子串
-  # 的候选项时，都需要检查子串的索引是否与反向子串的原始索引相同。如果相同，那么我们尝试更新目前为止找到的最长回文子串；
-   # 如果不是，我们就跳过这个候选项并继续寻找下一个候选。
+#的候选项时，都需要检查子串的索引是否与反向子串的原始索引相同。如果相同，那么我们尝试更新目前为止找到的最长回文子串；
+#如果不是，我们就跳过这个候选项并继续寻找下一个候选。
 
 class DP:
-
-    def maxlcs(self,a,b):   #最大公共子序列
+    # 最大公共子序列
+    def maxlcs(self,a,b):
 
         m = len(a)
         n = len(b)
@@ -52,15 +52,18 @@ class DP:
         res = ''.join(res[::-1])
         return res,dp[m][n]
 
-    def maxlss(self,a,b):     #最长公共子串
-
+    # 最长公共子串
+    def maxlss(self,a,b):
+        '''
+        思路
+        '''
         m = len(a)
         n = len(b)
-        dp = [[0 for i in range(n + 1)] for j in range(m + 1)]
+        # dp[i][j]表示a的子串a[:i]与b的子串b[:j]的最长公共子串的长度
+        dp = [[0 for _ in range(n + 1)] for _ in range(m + 1)]
         result = 0
-        last = 0  #a序列最长子串最后的索引位置
-        res = ''
-
+        # a序列最长子串最后的索引位置
+        last = 0
         for i in range(1, m + 1):
             for j in range(1, n + 1):
 
@@ -69,18 +72,19 @@ class DP:
                     if dp[i][j] > result:
                         result = dp[i][j]
                         last = i
-                # else:    可省略
-                #     dp[i][j] = 0
+                else:
+                    dp[i][j] = 0
 
         return a[last-result:last],result
 
     def longestPalindrome(self, s):
+        #DP的方法 但是速度较慢 待优化
         if not s:
             return ''
             # 先将任一单个字母作为结果
         start = 0
         maxlen = 1
-        dp = [[0 for __ in range(len(s))] for __ in range(len(s))]
+        dp = [[0 for _ in range(len(s))] for _ in range(len(s))]
         # 将长度1和长度2（相同字母）情况初始化赋值
         for i in range(len(s)):
             dp[i][i] = 1
@@ -88,7 +92,6 @@ class DP:
                 dp[i][i + 1] = 1
                 start = i
                 maxlen = 2
-
         # 注意：不可横向遍历，否则例如abcba，是无法先将bcb置为1的，进而无法将abcba置为1
 
         for length in range(3, len(s) + 1):   #找到length个字母的回文 从3开始  因为初始化时已经找到两个字母的回文
@@ -104,7 +107,7 @@ class DP:
         return s[start:start + maxlen]
 
 ##############################中心拓展法#########################################
-    def longestPalindrome2(self, s):      #最长回文串???   如何用动态规划求解
+    def longestPalindrome2(self, s):      #最长回文串   如何用动态规划求解
 
         res = ''
         for i in range(len(s)):
@@ -122,13 +125,40 @@ class DP:
         # from inner to outer
 
     def helper(self, s, l, r):
-        while l >= 0 and r < len(s) and s[l] == s[r]:  # 从中间开始往两边检测最长回文数
+        while 0 <= r < len(s) and s[l] == s[r]:  # 从中间开始往两边检测最长回文数
             l -= 1
             r += 1
         return s[l + 1:r]
+
+    #动态规划求解
+    def longestPalindrome3(self, s: str) -> str:
+        size = len(s)
+        if size <= 1:
+            return s
+        # 二维 dp 问题
+        # 状态：dp[l,r]: s[l:r] 包括 l，r ，表示的字符串是不是回文串
+        dp = [[0 for _ in range(size)] for _ in range(size)]
+        longest_l = 1
+        res = s[0]
+
+        # 因为只有 1 个字符的情况在最开始做了判断
+        # 左边界一定要比右边界小，因此右边界从 1 开始
+        for r in range(1, size):
+            for l in range(r):
+                # 状态转移方程：如果头尾字符相等并且中间也是回文
+                # 在头尾字符相等的前提下，l+1<=r-1 如果收缩以后不构成区间（最多只有 1 个元素），直接返回 True 即可
+                # 否则要继续看收缩以后的区间的回文性
+                # a1 or a2 满足a1就不会在判断a2
+                if s[l] == s[r] and (r - l <= 2 or dp[l + 1][r - 1]):
+                    dp[l][r] = True
+                    cur_len = r - l + 1
+                    if cur_len > longest_l:
+                        longest_l = cur_len
+                        res = s[l:r + 1]
+        return res
 
 if __name__ ==  '__main__':
     mal = DP()
     print(mal.maxlcs(['A','B','C','B','D','A','B'],['B','D','C','A','B','A']))
     print(mal.maxlss("babad", 'dabab'))
-    print(mal.longestPalindrome('abababababacdefcaa'))
+    print(mal.longestPalindrome3('google”'))

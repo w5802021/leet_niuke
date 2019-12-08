@@ -6,16 +6,18 @@ class LNode:
         self.next = None
 
 def detectCycle(head):
-    if head is None or head.next is None:
+    if not head or not head.next:
         return None
 
     fast = slow = head
     while fast and fast.next:
         slow = slow.next
         fast = fast.next.next
-        if slow is fast:
+        if slow == fast:
+            # 找到链表中入环的第一个结点
+            # 这里注意，slow与fast指针第一次相遇的结点不一定是入口节点
             slow = head
-            while slow is not fast:
+            while slow != fast:
                 slow = slow.next
                 fast = fast.next
             return slow

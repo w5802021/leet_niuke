@@ -21,6 +21,7 @@ def middleNode(head):
 
     return slow
 
+# 参见109题即可
 def sortedListToBST(head):
     if not head:
         return None
@@ -33,9 +34,7 @@ def sortedListToBST(head):
         fast = fast.next.next
         slow = slow.next
     tmp = slow
-    #
-    if prevPtr:
-        prevPtr.next = None
+    slow.next = None
     root = TreeNode(tmp.val)
     root.left = sortedListToBST(head)
     root.right = sortedListToBST(tmp.next)
@@ -47,8 +46,6 @@ if __name__ == '__main__':
     llist = linkedlist_operate.LinkList()
     cur = llist.initList(l)
 
-
-    res = sortedListToBST(cur.next)
-
+    res = middleNode(cur.next)
     print('输出')
     llist.outll(res)

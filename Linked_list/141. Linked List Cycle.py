@@ -14,8 +14,7 @@ class LNode:
         self.next = None
 
 def hasCycle(head):               #快慢指针法  （有环则两指针必定相遇）
-
-    if head is None or head.next is None:
+    if not head  or not head.next:
         return None
 
     slow ,fast = head ,head
@@ -27,10 +26,17 @@ def hasCycle(head):               #快慢指针法  （有环则两指针必定�
             return True
     return False
 
-def hasCycle1(head):              #哈希表  存放链表节点的地址    （相同思路：将访问过的节点都赋上同一元素值，空间复杂度缩小）
+def hasCycle1(head):
+    '''
+    方法：哈希表  存放链表节点的地址
+    思路：将访问过的节点都赋上同一元素值，空间复杂度缩小）
+    :param head:
+    :return:
+    '''
     has = set()
 
     while head:
+        # id()存储head结点的内存地址
         if id(head) in has:
             return True
         has.add(id(head))
@@ -42,8 +48,6 @@ if __name__ == '__main__':
 
     llist = linkedlist_operate.LinkList()
     cur = llist.initList(l1)
-
     res = hasCycle(cur.next)
 
-    print('输出')
     print(res)

@@ -6,7 +6,8 @@ class LNode:
         self.next = None
 
 def mergeTwoLists(l1, l2):
-    dum = cur = LNode(None)
+    # 初始化一个空链表
+    dummy = cur = LNode(None)
 
     while l1 and l2:
         if l1.val < l2.val:
@@ -17,7 +18,7 @@ def mergeTwoLists(l1, l2):
             l2 = l2.next
         cur = cur.next
     cur.next = l1 or l2
-    return dum.next
+    return dummy.next
 
 if __name__ == '__main__':
     l1 = [1,2,4]
@@ -26,5 +27,4 @@ if __name__ == '__main__':
     cur1 = llist.initList(l1)
     cur2 = llist.initList(l2)
     res = mergeTwoLists(cur1.next, cur2.next)
-    print('输出')
     llist.outll(res)

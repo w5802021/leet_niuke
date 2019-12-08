@@ -34,17 +34,23 @@ def deleteDuplicates2(head):
 
     while head and head.next:       #这里将head看成当前值
         if head.val == head.next.val:
-            while head and head.next and head.val == head.next.val:   ##跳过连续的重复值
+            # 若存在多个重复值，则都跳过
+            while head and head.next and head.val == head.next.val:
                 head = head.next
             head = head.next
             pre.next = head
         else:
-            pre = pre.next          #没用重复节点时，pre的位置对应右移一步
+            pre = pre.next          #没有重复节点时，pre的位置对应右移一步
             head = head.next
     return dum.next
 
 #############################如何对无序的链表删除重复项######################   拓展
-def deleteDuplicates3(head):              #用哈希表有最小的时间复杂度
+def deleteDuplicates3(head):
+    '''
+    哈希表最小的时间复杂度
+    :param head:
+    :return:
+    '''
     has = set()
     dum = head
     while head and head.next:
@@ -69,7 +75,7 @@ if __name__ == '__main__':
     cur1 = llist.initList(l1)
     cur2 = llist.initList(l2)
 
-    res = deleteDuplicates3(cur1.next)
+    res = deleteDuplicates2(cur2.next)
 
     print('输出')
     llist.outll(res)

@@ -17,11 +17,19 @@ def reverseList(head):
     return cur.next
 
 def reverseList1(head):
-
-    p, rev = head, None
+    '''
+    思路：1、p指针初始指向链表头结点
+         2、res指向链表的尾结点
+         3、p指针从头结点开始一直遍历链表下一节点，直到结束
+         4、res指针从尾节点开始，接收p指针指向的链表值
+    :param head:
+    :return:
+    '''
+    # 初始化res=None代表反转链表的尾结点
+    p, res = head, None
     while p:
-        rev, rev.next, p = p, rev, p.next
-    return rev
+        p,res,res.next=p.next,p,res
+    return res
 
 
 def reverseList2(head):
@@ -57,10 +65,6 @@ if __name__ == '__main__':
 
     print('输出')
     llist.outll(res)
-
-
-
-
 
     # head = LNode()
     # head.next = None

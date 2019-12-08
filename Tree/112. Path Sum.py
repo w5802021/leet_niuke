@@ -35,6 +35,7 @@ def hasPathSum1(root, sum):    #路径之和2    问题：从根节点到叶子�
     res = []
     tmp = []
     dfs(root, sum, res, tmp)
+    res.sort(key = len)
     return res
 
 #########################################################################################  437
@@ -54,4 +55,4 @@ if __name__ == '__main__':
     l = [5,4,8,11,None,13,4,7,2,None,None,5,1]
     sum = 22
     tree = operate_tree.Tree()
-    print(hasPathSum2(tree.creatTree(l),sum)) #输出该节点的值
+    print(hasPathSum1(tree.creatTree(l),sum)) #输出该节点的值

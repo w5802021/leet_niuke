@@ -1,5 +1,6 @@
 import collections
-def leastInterval(tasks, n):    #空间占用多，速度慢
+#空间占用多，速度慢
+def leastInterval(tasks, n):
 
     dic = {}
     for i in tasks:
